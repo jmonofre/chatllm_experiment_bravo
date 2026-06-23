@@ -5,18 +5,29 @@ function createMessageId() {
 }
 
 function App() {
-  const [messages, setMessages] = useState([
-    {
-      id: createMessageId(),
-      role: "assistant",
-      content: "Bem-vindo ao ChatLLM Lab. Como posso ajudar voce hoje?",
-    },
-  ]);
+  const [user, setUser] = useState(null); // null = deslogado, { email, user_id } = logado
+  const [loadingAuth, setLoadingAuth] = useState(true);
+  const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const messagesRef = useRef(null);
   const abortControllerRef = useRef(null);
+
+  // Verificar autenticacao ao carregar
+  useEffect(() => {
+    checkAuth().then((data) => {
+      if (data) {
+        setUser(data);
+        setMessages([{
+          id: createMessageId(),
+          role: "assistant",
+          content: `Bem-vindo(a), ${data.email}! Como posso ajudar voce hoje?`,
+        }]);
+      }
+      setLoadingAuth(false);
+    });
+  }, []);
 
   const chatHistory = useMemo(
     () => messages.filter((msg) => msg.role === "user" || msg.role === "assistant"),
@@ -33,6 +44,22 @@ function App() {
       abortControllerRef.current?.abort();
     };
   }, []);
+
+  const handleAuth = (data) => {
+    setUser({ email: data.email, user_id: data.user_id });
+    setMessages([{
+      id: createMessageId(),
+      role: "assistant",
+      content: `Bem-vindo(a), ${data.email}! Como posso ajudar voce hoje?`,
+    }]);
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    setUser(null);
+    setMessages([]);
+    setError("");
+  };
 
   const onStop = () => {
     abortControllerRef.current?.abort();
@@ -108,10 +135,22 @@ function App() {
     }
   };
 
+  if (loadingAuth) {
+    return <main className="auth-shell"><div className="auth-card" style={{ textAlign: "center" }}>Carregando...</div></main>;
+  }
+
+  if (!user) {
+    return <AuthScreen onAuth={handleAuth} />;
+  }
+
   return (
     <main className="app-shell">
       <header className="app-header">
         <div className="brand">ChatLLM Lab</div>
+        <div className="header-right">
+          <span className="header-email">{user.email}</span>
+          <button className="btn-logout" onClick={handleLogout}>Sair</button>
+        </div>
       </header>
 
       <section className="messages" aria-live="polite" ref={messagesRef}>
@@ -133,7 +172,7 @@ function App() {
         onStop={onStop}
       />
 
-      <div className="warning-banner">Lembre-se, você precisa focar no experimento!!!</div>
+      <div className="warning-banner">Lembre-se, voce precisa focar no experimento!!!</div>
     </main>
   );
 }

@@ -64,7 +64,9 @@
         flex-shrink: 0;
         padding: 12px 24px;
         border-bottom: 1px solid var(--border);
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
 
       .brand {
@@ -72,6 +74,132 @@
         font-size: 0.95rem;
         color: var(--text);
         letter-spacing: 0;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .header-email {
+        font-size: 0.83rem;
+        color: var(--muted);
+      }
+
+      .btn-logout {
+        background: none;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 4px 12px;
+        font-size: 0.83rem;
+        color: var(--text);
+        cursor: pointer;
+        transition: background 120ms ease;
+      }
+
+      .btn-logout:hover {
+        background: var(--user-bubble);
+      }
+
+      /* --- Auth Screen --- */
+      .auth-shell {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-page);
+      }
+
+      .auth-card {
+        width: 100%;
+        max-width: 380px;
+        padding: 40px 32px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: var(--bg-page);
+        box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      }
+
+      .auth-brand {
+        font-size: 1.4rem;
+        font-weight: 700;
+        text-align: center;
+        margin: 0 0 4px;
+      }
+
+      .auth-title {
+        font-size: 1.05rem;
+        font-weight: 500;
+        text-align: center;
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+
+      .auth-error {
+        background: #fff5f5;
+        border: 1px solid #fed7d7;
+        color: #c0392b;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.87rem;
+        margin-bottom: 16px;
+      }
+
+      .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .auth-form input {
+        padding: 12px 14px;
+        border: 1px solid var(--composer-border);
+        border-radius: 10px;
+        font: inherit;
+        font-size: 0.95rem;
+        outline: none;
+        transition: border-color 150ms ease;
+      }
+
+      .auth-form input:focus {
+        border-color: #b0b0b0;
+      }
+
+      .auth-form button {
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: var(--accent);
+        color: #fff;
+        font: inherit;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 120ms ease;
+      }
+
+      .auth-form button:hover:not(:disabled) {
+        background: var(--accent-hover);
+      }
+
+      .auth-form button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .auth-toggle {
+        text-align: center;
+        font-size: 0.87rem;
+        color: var(--muted);
+        margin: 20px 0 0;
+      }
+
+      .auth-toggle a {
+        color: var(--text);
+        text-decoration: underline;
+        cursor: pointer;
       }
 
       .messages {
@@ -277,6 +405,7 @@
       src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
     ></script>
     <script type="text/babel" src="/frontend/src/api.js"></script>
+    <script type="text/babel" src="/frontend/src/AuthScreen.jsx"></script>
     <script type="text/babel" src="/frontend/src/MessageContent.jsx"></script>
     <script type="text/babel" src="/frontend/src/Composer.jsx"></script>
     <script type="text/babel" src="/frontend/src/App.jsx"></script>
